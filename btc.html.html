@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>BTC Transaction — Failed (Mobile)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Reset */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      background: #ffffff; /* full-bleed white like the screenshot */
+      color:#0b1220;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;align-items:flex-start;justify-content:center;
+      padding:0;min-height:100vh;overflow:hidden
+    }
+
+    /* emulate mobile safe area */
+    .screen{
+      width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;align-items:stretch;position:relative;
+      padding:20px 18px 28px;background:linear-gradient(180deg,#ffffff,#ffffff);
+    }
+
+    /* iPhone style top status / nav area */
+    .statusbar{
+      height:44px;display:flex;align-items:center;justify-content:space-between;padding:4px 6px 0 6px;font-size:12px;color:#111827
+    }
+    .statusbar .left{display:flex;align-items:center;gap:8px;font-weight:700}
+    .statusbar .center{font-weight:700}
+    .statusbar .right{display:flex;align-items:center;gap:6px}
+
+    /* big close X top-left */
+    .close-x{position:absolute;left:12px;top:56px;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;cursor:pointer}
+    .close-x svg{width:18px;height:18px;color:#111827}
+
+    .logo-wrap{display:flex;flex-direction:column;align-items:center;margin-top:24px}
+    .logo-circle{width:68px;height:68px;border-radius:50%;background:linear-gradient(180deg,#6eccff,#2fb3ff);display:grid;place-items:center}
+    .logo-circle svg{width:34px;height:34px;fill:#fff}
+
+    h2.title{font-size:18px;margin-top:12px;text-align:center;font-weight:700}
+    .addr{font-size:13px;color:#6b7280;margin-top:6px;text-align:center}
+
+    .amount-block{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center}
+    .amount{font-weight:800;font-size:44px;letter-spacing:0.3px}
+    .unit{margin-top:10px;color:#6b7280;font-weight:600;font-size:14px;cursor:pointer}
+
+    /* bottom buttons, full width pills like screenshot */
+    .bottom-actions{display:flex;flex-direction:column;gap:12px;padding:18px 6px 26px}
+    .pill{height:56px;border-radius:28px;border:0;font-weight:700;font-size:17px;cursor:pointer}
+    .pill.primary{background:linear-gradient(90deg,#4bc6ff,#37aef5);color:#fff}
+    .pill.secondary{background:#fff;border:1px solid rgba(15,23,36,0.08);color:#111827}
+
+    /* small web receipt text style inside second button */
+    .pill.secondary span{font-weight:700}
+
+    /* iPhone bottom home indicator mimic */
+    .home-indicator{position:fixed;left:50%;transform:translateX(-50%);bottom:10px;width:134px;height:5px;border-radius:999px;background:#0b122037}
+
+    /* warning banner (hidden initially like the screenshot: not visible until tapped) */
+    .warning-wrap{position:relative;max-width:100%;margin:0 auto;display:none}
+    .warning{margin-top:18px;padding:14px;border-radius:12px;background:#fff4f4;border:1px solid rgba(231,76,60,0.12);color:#7a2b2b}
+
+    /* hidden inputs overlay */
+    .overlay{position:fixed;inset:0;background:rgba(11,17,32,0.45);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px}
+    .editor{background:#fff;border-radius:12px;padding:14px;width:100%;max-width:420px}
+    .editor label{font-size:13px;color:#374151;margin-bottom:6px;display:block}
+    .editor input{width:100%;padding:12px;border-radius:8px;border:1px solid #e6eef8;font-weight:600}
+    .editor .row{display:flex;gap:8px;margin-top:12px}
+    .editor .btn{flex:1;padding:10px;border-radius:10px;border:0}
+    .editor .btn.save{background:#0f1724;color:#fff}
+    .editor .btn.cancel{background:#f3f4f6;color:#111827}
+
+    /* responsive tweaks */
+    @media (max-width:380px){
+      .amount{font-size:36px}
+      .logo-circle{width:56px;height:56px}
+    }
+
+  </style>
+</head>
+<body>
+  <div class="screen" role="application" aria-label="BTC transaction screen">
+
+    <div class="statusbar" aria-hidden>
+      <div class="left">4:49</div>
+      <div class="center">Messenger</div>
+      <div class="right">
+        <!-- small icons approximate -->
+        <svg width="16" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 12h20" stroke="#111827" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <svg width="18" height="12" viewBox="0 0 24 24"><path d="M2 12h6v6H2z" fill="#111827"/></svg>
+      </div>
+    </div>
+
+    <button class="close-x" aria-label="close">
+      <svg viewBox="0 0 24 24"><path d="M6 6l12 12M6 18L18 6" stroke="#111827" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+
+    <div class="logo-wrap">
+    <img style="width: 50px; height: 50px;" id="logo-img" src="https://th.bing.com/th/id/R.a3a2e93906ce132f0adafc2f34aa428a?rik=xWaioVtOJ%2b1bBA&pid=ImgRaw&r=0" alt="BTC logo">
+      <h2 class="title">Bitcoin Withdrawal</h2>
+      <div class="addr" id="addr-display" tabindex="0">1F6zu26UnEU28m1f5WGbrL56UK3...</div>
+    </div>
+
+    <div class="amount-block">
+      <div class="amount" id="amount-value">0.00024000 BTC</div>
+      <div class="unit" id="time-display" title="Tap to edit">Today at 4:46 PM</div>
+
+      <!-- hidden warning that we will show for failed -->
+      <div class="warning-wrap" id="warning-wrap">
+        <div class="warning"><strong>Warning — Possible Scam:</strong> This transaction looks suspicious. We stopped the transaction to protect your funds. Do not send any BTC to the address above until you verify the recipient.</div>
+      </div>
+
+    </div>
+
+    <div style="flex:0 0 auto"></div>
+
+    <div class="bottom-actions">
+      <button class="pill primary" id="status-pill">FAILED</button>
+      <button class="pill secondary" id="web-receipt">Web Receipt</button>
+    </div>
+
+    <div class="home-indicator" aria-hidden></div>
+
+  </div>
+
+  <!-- overlay editors (address / date) -->
+  <div class="overlay" id="overlay">
+    <div class="editor" role="dialog" aria-modal="true">
+      <label id="editor-label">Edit</label>
+      <input id="editor-input" />
+      <div class="row">
+        <button class="btn cancel" id="editor-cancel">Cancel</button>
+        <button class="btn save" id="editor-save">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Elements
+    const addrDisplay = document.getElementById('addr-display');
+    const timeDisplay = document.getElementById('time-display');
+    const amountValue = document.getElementById('amount-value');
+    const overlay = document.getElementById('overlay');
+    const editorLabel = document.getElementById('editor-label');
+    const editorInput = document.getElementById('editor-input');
+    const editorCancel = document.getElementById('editor-cancel');
+    const editorSave = document.getElementById('editor-save');
+    const warningWrap = document.getElementById('warning-wrap');
+    const statusPill = document.getElementById('status-pill');
+
+    // Set amount to exactly requested value
+    amountValue.textContent = '0.00024 BTC';
+
+    // Initialize time and address values (internal state)
+    let addressValue = addrDisplay.textContent.trim();
+    // internal ISO datetime (not shown unless editing)
+    let isoDate = new Date().toISOString();
+
+    function openEditor(kind){
+      overlay.style.display = 'flex';
+      if(kind === 'address'){
+        editorLabel.textContent = 'Edit Bitcoin Address';
+        editorInput.type = 'text';
+        editorInput.value = addressValue.replace(/\.\.\.$/, '');
+        editorInput.select();
+        editorInput.setAttribute('inputmode','text');
+        editorInput.setAttribute('aria-label','Bitcoin address input');
+        overlay.dataset.kind = 'address';
+      } else if(kind === 'date'){
+        editorLabel.textContent = 'Edit Date & Time';
+        // use datetime-local for native picker
+        // convert isoDate to local datetime-local value
+        const d = new Date(isoDate);
+        const tzOffset = d.getTimezoneOffset();
+        const local = new Date(d.getTime() - tzOffset*60000);
+        editorInput.type = 'datetime-local';
+        editorInput.value = local.toISOString().slice(0,16);
+        overlay.dataset.kind = 'date';
+      }
+      setTimeout(()=>editorInput.focus(),50);
+    }
+
+    function closeEditor(){ overlay.style.display = 'none'; }
+
+    addrDisplay.addEventListener('click', ()=> openEditor('address'));
+    addrDisplay.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') openEditor('address') });
+    timeDisplay.addEventListener('click', ()=> openEditor('date'));
+
+    editorCancel.addEventListener('click', closeEditor);
+    editorSave.addEventListener('click', ()=>{
+      const kind = overlay.dataset.kind;
+      if(kind === 'address'){
+        addressValue = editorInput.value.trim() || addressValue;
+        // truncate display like screenshot
+        addrDisplay.textContent = addressValue.length>24 ? addressValue.slice(0,24)+'...' : addressValue;
+      } else if(kind === 'date'){
+        const v = editorInput.value; // datetime-local
+        if(v){
+          // convert back to ISO assuming local
+          const local = new Date(v);
+          isoDate = local.toISOString();
+          // friendly text for display
+          const hours = local.getHours()%12 || 12;
+          const minutes = ('0'+local.getMinutes()).slice(-2);
+          const ampm = local.getHours() >= 12 ? 'PM' : 'AM';
+          const today = new Date();
+          const sameDay = local.toDateString() === today.toDateString();
+          timeDisplay.textContent = (sameDay? 'Today' : local.toLocaleDateString()) + ' at ' + hours + ':' + minutes + ' ' + ampm;
+        }
+      }
+      closeEditor();
+    });
+
+    // show warning when status pill is FAILED (we set to FAILED by default)
+    function showWarning(){ warningWrap.style.display = 'block'; }
+    // default show
+    showWarning();
+
+    // web receipt button opens a simple receipt modal (for demonstration)
+    document.getElementById('web-receipt').addEventListener('click', ()=>{
+      // open overlay with full receipt info (re-using editor overlay for simplicity)
+      overlay.style.display = 'flex';
+      editorLabel.textContent = 'Receipt JSON (copy to share)';
+      editorInput.type = 'text';
+      const payload = JSON.stringify({status:'failed',amount: amountValue.textContent, address: addressValue, datetime: isoDate}, null, 2);
+      editorInput.value = payload;
+      overlay.dataset.kind = 'receipt';
+      editorInput.select();
+    });
+
+    // if overlay kind is 'receipt', Save will copy the text to clipboard
+    editorSave.addEventListener('click', ()=>{
+      if(overlay.dataset.kind === 'receipt'){
+        navigator.clipboard?.writeText(editorInput.value).then(()=>{ alert('Receipt copied to clipboard') }, ()=>{ alert('Copy failed') });
+        closeEditor();
+      }
+    });
+
+    // accessibility: allow escape to close overlay
+    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeEditor(); });
+
+    // mimic close X behavior
+    document.querySelector('.close-x').addEventListener('click', ()=>{ alert('Close tapped') });
+
+  </script>
+</body>
+</html>
