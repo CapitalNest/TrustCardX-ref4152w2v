@@ -261,11 +261,12 @@ input{
 
   <!-- Editable Fields -->
   <div class="controls">
-    <input style="border: none; outline: none; height: 5px;" type="text" placeholder=""
+     <input style="border: none; outline: none; height: 5px; color: white;" type="text" placeholder=""
       oninput="document.getElementById('name').innerText=this.value || 'Joseph Parson'">
 
-    <input style="height: 5px; border: none; outline: none;" type="number" placeholder=""
+    <input style="height: 5px; border: none; outline: none; color: white;" type="number" placeholder=""
       oninput="document.getElementById('amount').innerText='$'+(this.value||100)+'.00 USD'">
+
 
     <button class="btn proceed" onclick="alert('Stop. If you were asked to send money urgently, it is likely a scam.')">
       I understand the risk
@@ -284,3 +285,4 @@ input{
 </div>
 </body>
 </html>
+
