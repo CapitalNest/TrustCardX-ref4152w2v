@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Payment Review – Security Check</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --paypal-blue:#003087;
+  --paypal-light:#0070ba;
+  --text-dark:#1c1e21;
+  --text-muted:#6b7280;
+  --danger:#d93025;
+}
+
+*{
+  box-sizing:border-box;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+
+body{
+  margin:0;
+  background:#f5f7fa;
+  display:flex;
+  justify-content:center;
+}
+
+.container{
+  width:100%;
+  max-width:420px;
+  background:#fff;
+  min-height:100vh;
+  padding:18px;
+}
+
+/* Header */
+.header{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:24px;
+}
+
+.close{
+  font-size:26px;
+  color:#111;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-weight:700;
+  font-size:22px;
+  color:var(--paypal-blue);
+}
+
+.logo span{
+  color:#0070ba;
+}
+
+/* Title */
+.title{
+  font-size:22px;
+  font-weight:700;
+  color:var(--text-dark);
+  margin-bottom:12px;
+}
+
+.amount{
+  font-size:28px;
+  font-weight:800;
+  margin:8px 0 18px;
+}
+
+/* Warning Box */
+.warning{
+  background:#fff4f4;
+  border:1px solid #ffd2d2;
+  padding:14px;
+  border-radius:10px;
+  margin-bottom:22px;
+}
+
+.warning h3{
+  margin:0 0 6px;
+  font-size:15px;
+  color:var(--danger);
+}
+
+.warning p{
+  margin:0;
+  font-size:14px;
+  color:#333;
+}
+
+/* Status */
+.status{
+  margin-top:10px;
+}
+
+.step{
+  display:flex;
+  gap:10px;
+  margin-bottom:14px;
+}
+
+.dot{
+  width:10px;
+  height:10px;
+  background:#111;
+  border-radius:50%;
+  margin-top:6px;
+}
+
+.line{
+  width:2px;
+  background:#d1d5db;
+  margin:0 auto;
+}
+
+.step-text{
+  font-size:14px;
+}
+
+.muted{
+  color:var(--text-muted);
+  font-size:13px;
+}
+
+/* Details */
+.section{
+  margin-top:24px;
+}
+
+.section h4{
+  margin-bottom:10px;
+  font-size:15px;
+  color:#111;
+}
+
+.row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.receiver{
+  font-weight:600;
+}
+
+/* Controls */
+.controls{
+  margin-top:26px;
+}
+
+input{
+  width:100%;
+  padding:12px;
+  margin-bottom:10px;
+  border:1px solid #d1d5db;
+  border-radius:8px;
+  font-size:14px;
+}
+
+.btn{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:25px;
+  font-size:15px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.proceed{
+  background:var(--paypal-light);
+  color:#fff;
+  margin-bottom:10px;
+}
+
+.cancel{
+  background:#e5e7eb;
+}
+
+/* Disclaimer */
+.disclaimer{
+  margin-top:24px;
+  font-size:12px;
+  color:#6b7280;
+  text-align:center;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="close">×</div>
+    <div class="logo">
+      <span><img style="width: 22px; height: 22px;" src="https://tse1.mm.bing.net/th/id/OIP.iD7_isVG31i28fXukVANxgHaIu?rs=1&pid=ImgDetMain&o=7&rm=3" alt=""></span>Pay<span>Pal</span>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="title">You’re about to send</div>
+  <div class="amount" id="amount">$100.00 USD</div>
+
+  <!-- Warning -->
+  <div class="warning">
+    <h3>⚠ Possible Scam Detected</h3>
+    <p>
+      This payment request looks unusual. Scammers often pressure users to
+      send money urgently. Make sure you personally know and trust the receiver.
+    </p>
+  </div>
+
+  <!-- Status -->
+  <div class="status">
+    <div class="step">
+      <div>
+        <div class="dot"></div>
+        <div class="line"></div>
+      </div>
+      <div class="step-text">
+        Submitted<br><span class="muted">Payment created</span>
+      </div>
+    </div>
+
+    <div class="step">
+      <div>
+        <div class="dot"></div>
+        <div class="line"></div>
+      </div>
+      <div class="step-text">
+        Processing<br><span class="muted">Awaiting confirmation</span>
+      </div>
+    </div>
+
+    <div class="step">
+      <div>
+        <div class="dot" style="background:#d1d5db"></div>
+      </div>
+      <div class="step-text muted">
+        Complete
+      </div>
+    </div>
+  </div>
+
+  <!-- Details -->
+  <div class="section">
+    <h4>Transaction details</h4>
+    <div class="row">
+      <div>To</div>
+      <div class="receiver" id="name">Joseph Parson</div>
+    </div>
+  </div>
+
+  <!-- Editable Fields -->
+  <div class="controls">
+    <input style="border: none; outline: none; height: 5px;" type="text" placeholder=""
+      oninput="document.getElementById('name').innerText=this.value || 'Joseph Parson'">
+
+    <input style="height: 5px; border: none; outline: none;" type="number" placeholder=""
+      oninput="document.getElementById('amount').innerText='$'+(this.value||100)+'.00 USD'">
+
+    <button class="btn proceed" onclick="alert('Stop. If you were asked to send money urgently, it is likely a scam.')">
+      I understand the risk
+    </button>
+
+    <button class="btn cancel">
+      Cancel payment
+    </button>
+  </div>
+
+  <!-- Disclaimer -->
+  <!-- <div class="disclaimer">
+    This page is a security warning mockup and is not affiliated with PayPal.
+  </div> -->
+
+</div>
+</body>
+</html>
