@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TrustCardX support</title>
-    <!-- Google Fonts for premium typography -->
+    <title>Kundenservice | TrustCardX Support-Center</title>
+    <!-- Google Fonts für erstklassige Typografie -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -13,7 +13,7 @@
         :root {
             --primary: #0f172a; /* Deep Slate */
             --primary-light: #1e293b;
-            --accent: #059669; /* Emerald Green for success/trust */
+            --accent: #059669; /* Smaragdgrün für Vertrauen */
             --accent-hover: #047857;
             --text-main: #334155;
             --text-light: #64748b;
@@ -177,7 +177,7 @@
         .alert-box {
             display: none;
             text-align: center;
-            animation: fadeIn 0.5s ease forward;
+            animation: fadeIn 0.5s ease forwards;
         }
 
         @keyframes fadeIn {
@@ -254,14 +254,14 @@
 </head>
 <body>
 
-    <!-- Professional Navbar Header -->
+    <!-- TrustCardX Professional Navbar Header -->
     <header>
         <div class="logo">
             <div class="logo-dot"></div>
-            <span>EnterpriseSupport</span>
+            <span>TrustCardX</span>
         </div>
         <nav>
-            <a href="#" onclick="location.reload();">Help Center</a>
+            <a href="#" onclick="location.reload();">Hilfe-Center</a>
         </nav>
     </header>
 
@@ -272,38 +272,37 @@
             <!-- The Form Container -->
             <div id="formContainer">
                 <div class="card-header">
-                    <h1>Submit a Request</h1>
-                    <p>Our dedicated support team is ready to assist you.</p>
+                    <h1>Anfrage einreichen</h1>
+                    <p>Unser engagiertes Support-Team steht Ihnen gerne zur Verfügung.</p>
                 </div>
                 
                 <form id="supportForm" onsubmit="handleSubmit(event)">
                     <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" class="form-control" placeholder="name@company.com" required>
+                        <label for="email">E-Mail-Adresse</label>
+                        <input type="email" id="email" class="form-control" placeholder="name@unternehmen.de" required>
                     </div>
                     
                     <div class="form-group">
-                        <label for="message">How can we help you?</label>
-                        <textarea id="message" class="form-control" placeholder="Please provide as much detail as possible so we can better assist you..." required></textarea>
+                        <label for="message">Wie können wir Ihnen helfen?</label>
+                        <textarea id="message" class="form-control" placeholder="Bitte beschreiben Sie Ihr Anliegen so detailliert wie möglich..." required></textarea>
                     </div>
                     
-                    <button type="submit" class="submit-btn">Send Message</button>
+                    <button type="submit" class="submit-btn">Nachricht senden</button>
                 </form>
             </div>
 
             <!-- The Persistent Beautiful Alert Message Box -->
             <div id="alertContainer" class="alert-box">
                 <div class="alert-icon">
-                    <!-- Premium SVG checkmark icon -->
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                     </svg>
                 </div>
-                <h2>Message Received Successfully</h2>
-                <p>Thank you for reaching out. A support ticket has been created and logged in our system.</p>
-                <div class="badge">⏰ Reply can take up to 3 working days</div>
+                <h2>Nachricht erfolgreich empfangen</h2>
+                <p>Vielen Dank für Ihre Kontaktaufnahme. Ihre Anfrage wurde erfolgreich in unserem System registriert.</p>
+                <div class="badge">⏰ Eine Rückmeldung kann bis zu 3 Werktage dauern</div>
                 <div>
-                    <button class="reset-btn" onclick="clearSubmission()">Submit another ticket</button>
+                    <button class="reset-btn" onclick="clearSubmission()">Eine weitere Anfrage senden</button>
                 </div>
             </div>
 
@@ -312,7 +311,7 @@
 
     <!-- Footer -->
     <footer>
-        &copy; 2026 EnterpriseSupport Global Inc. All rights reserved. Secured with 256-bit encryption.
+        &copy; 2026 TrustCardX Global Inc. Alle Rechte vorbehalten. Gesichert mit 256-Bit-Verschlüsselung.
     </footer>
 
     <!-- Logic for Form Persistence and Layout Switch -->
@@ -326,9 +325,8 @@
 
         // Function called when user hits Send
         function handleSubmit(event) {
-            event.preventDefault(); // Prevent page from doing an actual backend refresh
+            event.preventDefault(); 
             
-            // Get values (you would typically send these to your backend/API here)
             const email = document.getElementById("email").value;
             const message = document.getElementById("message").value;
 
@@ -353,3 +351,4 @@
         }
     </script>
 </body>
+</html>
