@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Security Verification</title>
     <style>
         * {
@@ -13,29 +13,36 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        body {
+        html, body {
             background-color: #ffffff;
             color: #111827;
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
+            height: 100%;
+            overflow: hidden; /* Prevents page bouncing and accidental scrolling */
         }
 
-        /* Full screen app layout with optimal maximum width for reading ergonomics */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Full screen app layout restricted strictly to viewport height */
         .app-screen {
             width: 100%;
             max-width: 500px;
-            min-height: 100vh;
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            padding: 24px 24px 34px 24px; /* Bottom padding optimized for modern mobile safe areas */
+            justify-content: space-between;
+            padding: 20px 24px calc(20px + env(safe-area-inset-bottom)) 24px;
         }
 
         /* Top close action */
         .top-nav {
             display: flex;
             justify-content: flex-start;
-            margin-bottom: 24px;
+            height: 32px;
+            margin-bottom: 4vh;
         }
 
         .close-btn {
@@ -55,34 +62,34 @@
 
         /* Main Header styling */
         .header {
-            margin-bottom: 36px;
+            margin-bottom: 4vh;
         }
 
         .alert-badge {
-            width: 56px;
-            height: 56px;
+            width: 52px;
+            height: 52px;
             background-color: #fff1f2;
             border-radius: 16px;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 24px;
+            margin-bottom: 3vh;
             color: #f43f5e;
         }
 
         h1 {
-            font-size: 26px;
+            font-size: calc(20px + 0.8vh);
             font-weight: 700;
             letter-spacing: -0.5px;
             color: #111827;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             line-height: 1.25;
         }
 
         .description {
-            font-size: 15px;
+            font-size: calc(13px + 0.2vh);
             color: #6b7280;
-            line-height: 1.6;
+            line-height: 1.5;
         }
 
         .description a {
@@ -91,35 +98,31 @@
             font-weight: 600;
         }
 
-        .description a:hover {
-            text-decoration: underline;
-        }
-
         /* Main content list - Sticker-style Layout */
         .content-body {
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            gap: 28px;
-            margin-bottom: 40px;
+            justify-content: center;
+            gap: 3.5vh;
+            margin-bottom: 4vh;
         }
 
         .row-item {
             display: flex;
             align-items: flex-start;
-            gap: 18px;
+            gap: 16px;
         }
 
         /* Sticker/Badge graphic container */
         .sticker-icon {
-            width: 44px;
-            height: 44px;
+            width: 42px;
+            height: 42px;
             border-radius: 12px;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-shrink: 0;
-            font-weight: 600;
         }
 
         /* Custom premium color palettes for the graphical stickers */
@@ -139,8 +142,8 @@
         }
 
         .row-text {
-            font-size: 15px;
-            line-height: 1.55;
+            font-size: calc(13px + 0.2vh);
+            line-height: 1.5;
             color: #374151;
             font-weight: 450;
             padding-top: 2px;
@@ -151,16 +154,12 @@
             display: flex;
             align-items: flex-start;
             gap: 14px;
-            padding: 20px;
+            padding: 16px;
             background-color: #f9fafb;
             border-radius: 16px;
-            margin-bottom: 24px;
+            margin-bottom: 3vh;
             cursor: pointer;
             transition: background-color 0.2s;
-        }
-
-        .agreement-container:hover {
-            background-color: #f3f4f6;
         }
 
         .custom-checkbox {
@@ -172,12 +171,11 @@
             justify-content: center;
             align-items: center;
             flex-shrink: 0;
-            margin-top: 2px;
+            margin-top: 1px;
             transition: all 0.2s;
             background-color: #ffffff;
         }
 
-        /* Hidden standard checkbox, logic tied via JS for native feel */
         .agreement-container input {
             position: absolute;
             opacity: 0;
@@ -202,8 +200,8 @@
         }
 
         .agreement-label {
-            font-size: 14px;
-            line-height: 1.5;
+            font-size: calc(12px + 0.15vh);
+            line-height: 1.45;
             color: #4b5563;
             user-select: none;
         }
@@ -212,12 +210,13 @@
         .actions-group {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
+            margin-top: auto;
         }
 
         .btn {
             width: 100%;
-            height: 54px;
+            height: clamp(48px, 6vh, 54px);
             border-radius: 14px;
             font-size: 16px;
             font-weight: 600;
@@ -226,7 +225,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.2s ease;
         }
 
         .btn-primary {
@@ -234,24 +233,10 @@
             color: #ffffff;
         }
 
-        .btn-primary:hover {
-            background-color: #1f2937;
-            transform: translateY(-1px);
-        }
-
-        .btn-primary:active {
-            transform: translateY(0);
-        }
-
         .btn-secondary {
             background-color: #ffffff;
             color: #4b5563;
             border: 1px solid #e5e7eb;
-        }
-
-        .btn-secondary:hover {
-            background-color: #f9fafb;
-            color: #111827;
         }
     </style>
 </head>
@@ -271,7 +256,7 @@
         <!-- Main Hero Header -->
         <div class="header">
             <div class="alert-badge">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
                     <line x1="12" y1="9" x2="12" y2="13"></line>
                     <line x1="12" y1="17" x2="12.01" y2="17"></line>
@@ -285,9 +270,8 @@
         <div class="content-body">
             
             <div class="row-item">
-                <div class="sticker-icon Queens-badge sticker-blue">
-                    <!-- Modern Users / Network Identity Icon -->
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <div class="sticker-icon sticker-blue">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                         <circle cx="9" cy="7" r="4"></circle>
                         <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
@@ -301,8 +285,7 @@
 
             <div class="row-item">
                 <div class="sticker-icon sticker-amber">
-                    <!-- Premium Urgency/Clock Icon -->
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10"></circle>
                         <polyline points="12 6 12 12 16 14"></polyline>
                     </svg>
@@ -314,8 +297,7 @@
 
             <div class="row-item">
                 <div class="sticker-icon sticker-emerald">
-                    <!-- Professional Market/Growth Icon -->
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
                         <polyline points="17 6 23 6 23 12"></polyline>
                     </svg>
@@ -332,7 +314,7 @@
             <input type="checkbox" id="acknowledge-checkbox">
             <div class="custom-checkbox"></div>
             <span class="agreement-label">
-                I explicitly acknowledge that I am proceeding at my own risk, and understand these funds cannot be recovered or refunded if this is a scam.
+                I explicitly acknowledge that I am proceeding at my own risk, and understand these funds cannot be recovered if this is a scam.
             </span>
         </label>
 
