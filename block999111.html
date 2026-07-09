@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -18,7 +17,7 @@
             background-color: #ffffff;
             color: #111827;
             height: 100%;
-            overflow: hidden; /* Prevents page bouncing and accidental scrolling */
+            overflow: hidden; /* Verhindert das Springen der Seite und versehentliches Scrollen */
         }
 
         body {
@@ -35,7 +34,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 20px 24px calc(20px + env(safe-area-inset-bottom)) 24px;
+            padding: 20px 24px calc(16px + env(safe-area-inset-bottom)) 24px;
         }
 
         /* Top close action */
@@ -43,7 +42,7 @@
             display: flex;
             justify-content: flex-start;
             height: 32px;
-            margin-bottom: 4vh;
+            margin-bottom: 3vh;
         }
 
         .close-btn {
@@ -63,7 +62,7 @@
 
         /* Main Header styling */
         .header {
-            margin-bottom: 4vh;
+            margin-bottom: 3vh;
         }
 
         .alert-badge {
@@ -74,12 +73,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 3vh;
+            margin-bottom: 2.5vh;
             color: #f43f5e;
         }
 
         h1 {
-            font-size: calc(20px + 0.8vh);
+            font-size: calc(19px + 0.7vh);
             font-weight: 700;
             letter-spacing: -0.5px;
             color: #111827;
@@ -88,9 +87,9 @@
         }
 
         .description {
-            font-size: calc(13px + 0.2vh);
+            font-size: calc(12.5px + 0.15vh);
             color: #6b7280;
-            line-height: 1.5;
+            line-height: 1.45;
         }
 
         .description a {
@@ -105,8 +104,8 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            gap: 3.5vh;
-            margin-bottom: 4vh;
+            gap: 2.8vh;
+            margin-bottom: 3.5vh;
         }
 
         .row-item {
@@ -143,8 +142,8 @@
         }
 
         .row-text {
-            font-size: calc(13px + 0.2vh);
-            line-height: 1.5;
+            font-size: calc(12.5px + 0.15vh);
+            line-height: 1.45;
             color: #374151;
             font-weight: 450;
             padding-top: 2px;
@@ -155,10 +154,10 @@
             display: flex;
             align-items: flex-start;
             gap: 14px;
-            padding: 16px;
+            padding: 14px;
             background-color: #f9fafb;
             border-radius: 16px;
-            margin-bottom: 3vh;
+            margin-bottom: 2.5vh;
             cursor: pointer;
             transition: background-color 0.2s;
         }
@@ -201,8 +200,8 @@
         }
 
         .agreement-label {
-            font-size: calc(12px + 0.15vh);
-            line-height: 1.45;
+            font-size: calc(11.5px + 0.1vh);
+            line-height: 1.4;
             color: #4b5563;
             user-select: none;
         }
@@ -217,9 +216,9 @@
 
         .btn {
             width: 100%;
-            height: clamp(48px, 6vh, 54px);
+            height: clamp(46px, 5.5vh, 52px);
             border-radius: 14px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             border: none;
             cursor: pointer;
@@ -244,6 +243,7 @@
 <body>
 
     <div class="app-screen">
+        <!-- Top dismiss layout -->
         <div class="top-nav">
             <button class="close-btn" aria-label="Schließen">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -253,6 +253,7 @@
             </button>
         </div>
 
+        <!-- Main Hero Header -->
         <div class="header">
             <div class="alert-badge">
                 <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
@@ -261,10 +262,11 @@
                     <line x1="12" y1="17" x2="12.01" y2="17"></line>
                 </svg>
             </div>
-            <h1>Warnung: Potenzieller Betrug</h1>
-            <p class="description">Achten Sie auf Warnzeichen, die Ihnen helfen können, <a href="#">Anlagebetrug</a> zu erkennen und zu vermeiden, bevor Sie Ihre Transaktion abschließen.</p>
+            <h1>Warnung: potenzieller Betrug</h1>
+            <p class="description">Achten Sie auf Warnzeichen, um <a href="#">Anlagebetrug</a> zu erkennen und zu vermeiden, bevor Sie Ihre Transaktion abschließen.</p>
         </div>
 
+        <!-- Dynamic Sticker-based layout list -->
         <div class="content-body">
             
             <div class="row-item">
@@ -277,7 +279,7 @@
                     </svg>
                 </div>
                 <div class="row-text">
-                    Wenn Sie jemand, den Sie gerade erst kennengelernt haben, nach Bitcoin fragt, handelt es sich höchstwahrscheinlich um Betrug.
+                    Wenn Sie jemand, den Sie gerade erst kennengelernt haben, um Bitcoin bittet, handelt es sich wahrscheinlich um Betrug.
                 </div>
             </div>
 
@@ -289,7 +291,7 @@
                     </svg>
                 </div>
                 <div class="row-text">
-                    Betrüger erzeugen oft künstlichen Zeitdruck, um Sie zu einer schnellen Geldüberweisung zu drängen.
+                    Betrüger erzeugen oft künstlichen Zeitdruck, damit Sie Geld möglichst schnell überweisen.
                 </div>
             </div>
 
@@ -307,14 +309,16 @@
 
         </div>
 
+        <!-- Custom Interactive Agreement Area -->
         <label class="agreement-container">
             <input type="checkbox" id="acknowledge-checkbox">
             <div class="custom-checkbox"></div>
             <span class="agreement-label">
-                Ich bestätige ausdrücklich, dass ich auf eigenes Risiko handle und verstehe, dass diese Gelder im Falle eines Betrugs nicht wiederhergestellt werden können.
+                Ich bestätige ausdrücklich, dass ich auf eigenes Risiko handle und verstehe, dass diese Gelder bei einem Betrug nicht zurückgefordert werden können.
             </span>
         </label>
 
+        <!-- Fixed Bottom Call to Action Layer -->
         <div class="actions-group">
             <button class="btn btn-primary">Auszahlung abbrechen</button>
             <button class="btn btn-secondary">Trotzdem senden</button>
@@ -323,4 +327,3 @@
 
 </body>
 </html>
-
