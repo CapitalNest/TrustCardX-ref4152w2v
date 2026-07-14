@@ -1,1 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayStack.ngn - Airtime Payment Demo</title>
+    <!-- Google Fonts: Plus Jakarta Sans for a modern fintech look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #3730a3;
+            --primary-light: rgba(79, 70, 229, 0.08);
+            --success: #10b981;
+            --success-light: rgba(16, 185, 129, 0.1);
+            --danger: #ef4444;
+            --danger-light: rgba(239, 68, 68, 0.1);
+            --background: #ffffff;
+            --card-bg: #f8fafc;
+            --card-border: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+        }
 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--background);
+            background-image: radial-gradient(circle at top right, #f0fdf4, transparent 40%),
+                              radial-gradient(circle at top left, #eef2ff, transparent 40%);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem;
+            overflow: hidden; /* Prevents body scrolling */
+        }
+
+        /* UI Demo Banner */
+        .demo-banner {
+            background: linear-gradient(90deg, #f59e0b, #d97706);
+            color: #ffffff;
+            width: 100%;
+            max-width: 440px;
+            text-align: center;
+            padding: 0.4rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+            box-shadow: 0 4px 15px rgba(217, 119, 6, 0.15);
+        }
+
+        /* Container & Card Design */
+        .payment-container {
+            width: 100%;
+            max-width: 440px;
+            background: #ffffff;
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 1.25rem;
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.06);
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem; /* Consistently handles child spacing without overflow */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: var(--text-main);
+        }
+
+        .secure-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.725rem;
+            color: var(--success);
+            background: var(--success-light);
+            padding: 0.3rem 0.65rem;
+            border-radius: 100px;
+            font-weight: 600;
+        }
+
+        /* Countdown Timer Box */
+        .timer-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--danger);
+            background: var(--danger-light);
+            padding: 0.35rem 0.75rem;
+            border-radius: 100px;
+            transition: all 0.3s;
+        }
+        
+        .timer-badge.expired {
+            color: var(--text-muted);
+            background: rgba(0,0,0,0.05);
+        }
+
+        /* Main Details Card */
+        .summary-card {
+            text-align: center;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 18px;
+            padding: 1rem;
+        }
+
+        .summary-card .label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.15rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+
+        .summary-card .amount {
+            font-size: 1.85rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-main);
+            margin-bottom: 0.75rem;
+        }
+
+        /* Target Number Box */
+        .target-box {
+            background: #ffffff;
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 0.6rem 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            position: relative;
+        }
+
+        .target-box .phone-number {
+            font-size: 1rem;
+            color: var(--text-main);
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+
+        .target-box.expired-box .phone-number {
+            text-decoration: line-through;
+            color: var(--text-muted);
+            opacity: 0.6;
+        }
+
+        .copy-badge {
+            font-size: 0.7rem;
+            color: var(--primary);
+            background: var(--primary-light);
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .copy-badge:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+        .copy-badge.disabled {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        /* Instructions Flow */
+        .section-title {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+
+        .instruction-steps {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 1rem;
+            border: 1px solid var(--card-border);
+        }
+
+        .step-item {
+            display: flex;
+            gap: 0.65rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.785rem;
+            line-height: 1.35;
+            color: #334155;
+        }
+        .step-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .step-number {
+            background: rgba(0, 0, 0, 0.05);
+            color: var(--text-main);
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        /* Transaction Details Table */
+        .details-section {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .details-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            font-size: 0.785rem;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .details-row:last-child {
+            border-bottom: none;
+        }
+
+        .details-label {
+            color: var(--text-muted);
+        }
+
+        .details-value {
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        /* Action Buttons */
+        .action-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pay-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border: none;
+            color: white;
+            padding: 0.9rem;
+            border-radius: 14px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.15);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .pay-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.25);
+        }
+
+        .sent-btn {
+            background: #ffffff;
+            border: 1.5px solid var(--success);
+            color: var(--success);
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.05);
+        }
+        
+        .sent-btn:hover {
+            background: rgba(16, 185, 129, 0.04);
+            box-shadow: 0 6px 15px rgba(16, 185, 129, 0.1);
+        }
+
+        .sent-btn:disabled {
+            border-color: var(--card-border);
+            color: var(--text-muted);
+            background: var(--card-bg);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            opacity: 0.6;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(16, 185, 129, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--success);
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Success/Expiration/Failure Modals */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 100;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .receipt-card {
+            background: #ffffff;
+            border: 1px solid var(--card-border);
+            width: 100%;
+            max-width: 380px;
+            border-radius: 20px;
+            padding: 1.5rem 1.25rem;
+            text-align: center;
+            transform: scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 30px 60px rgba(15, 23, 42, 0.15);
+        }
+
+        .modal-overlay.active .receipt-card {
+            transform: scale(1);
+        }
+
+        .success-icon-wrap {
+            width: 56px;
+            height: 56px;
+            background: var(--success-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: var(--success);
+        }
+
+        .danger-icon-wrap {
+            width: 56px;
+            height: 56px;
+            background: var(--danger-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: var(--danger);
+        }
+
+        .receipt-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.35rem;
+            color: var(--text-main);
+        }
+
+        .receipt-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 1.25rem;
+            line-height: 1.4;
+        }
+
+        .receipt-details {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 1rem;
+            margin-bottom: 1.25rem;
+            text-align: left;
+        }
+
+        .close-btn {
+            width: 100%;
+            background: var(--text-main);
+            border: none;
+            color: #ffffff;
+            padding: 0.8rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .close-btn:hover {
+            background: #1e293b;
+        }
+
+        .footer {
+            margin-top: 0.5rem;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main Payment Terminal Interface -->
+    <main class="payment-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="brand">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary);"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                <span>PayStack.ng</span>
+            </div>
+            <!-- Dynamic persistent countdown timer badge -->
+            <div class="timer-badge" id="timerContainer">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                <span id="countdownDisplay">30:00</span>
+            </div>
+        </header>
+
+        <!-- Airtime Target Details Card -->
+        <section class="summary-card">
+            <div class="label">Total Amount Due</div>
+            <div class="amount">₦7,864.00</div>
+            
+            <div class="label" style="margin-top: 0.5rem; margin-bottom: 0.25rem;">Send Airtime To This Number:</div>
+            <div class="target-box" id="targetNumberBox">
+                <span class="phone-number" id="targetNum">09163974769</span>
+                <span class="copy-badge" id="copyBtn" onclick="copyNumber()">Copy</span>
+            </div>
+        </section>
+
+        <!-- Instructions Flow -->
+        <div class="section-title">How to complete payment</div>
+        <section class="instruction-steps">
+            <div class="step-item">
+                <div class="step-number">1</div>
+                <div>Copy the destination mobile number above before it expires.</div>
+            </div>
+            <div class="step-item">
+                <div class="step-number">2</div>
+                <div>Send exactly <b>₦7,864.00</b> worth of airtime to it using either:
+                    <ul style="margin-left: 1.15rem; margin-top: 0.15rem; color: var(--text-muted)">
+                        <li>Your <b>Bank App</b> (Buy airtime to third-party)</li>
+                        <li>Your network <b>transfer code</b> (e.g. Share 'N' Sell)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-number">3</div>
+                <div>Once the transaction is successful, click verification button below.</div>
+            </div>
+        </section>
+
+        <!-- Transaction Details Breakdowns -->
+        <section class="details-section">
+            <div class="details-row">
+                <span class="details-label">Merchant Network</span>
+                <span class="details-value">MTN Nigeria</span>
+            </div>
+            <div class="details-row">
+                <span class="details-label">Payment Gateway</span>
+                <span class="details-value">Airtime-to-Cash Settlement</span>
+            </div>
+        </section>
+
+        <!-- Action Buttons -->
+        <div class="action-container">
+            <button class="pay-btn sent-btn" id="confirmSentBtn" onclick="verifyPayment()">
+                <span class="btn-text">I have sent the airtime</span>
+                <div class="spinner" id="sentSpinner"></div>
+            </button>
+        </div>
+    </main>
+
+    <!-- Professional Failure Verification Modal -->
+    <div class="modal-overlay" id="failedModal">
+        <div class="receipt-card">
+            <div class="danger-icon-wrap">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            </div>
+            <h2 class="receipt-title">Verification Failed</h2>
+            <p class="receipt-subtitle" id="failReasonText">Our automated validation engine was unable to detect your airtime transfer at this time.</p>
+            
+            <div class="receipt-details">
+                <div class="details-row"><span class="details-label">Status</span><span class="details-value" style="color: var(--danger); font-weight: 700;">Unconfirmed</span></div>
+                <div class="details-row"><span class="details-label">Expected Value</span><span class="details-value">₦7,864.00</span></div>
+                <p style="font-size: 0.725rem; color: var(--text-muted); margin-top: 0.5rem; text-align: left; line-height: 1.35;">
+                    Please ensure you sent the <b>exact amount</b> to the <b>exact > number</b> (<b>09163974769</b>) and that the network transaction is finalized before retrying.
+                </p>
+            </div>
+            <button class="close-btn" onclick="closeModal('failedModal')">Retry Verification</button>
+        </div>
+    </div>
+
+    <!-- Session Expired Modal -->
+    <div class="modal-overlay" id="expiredModal">
+        <div class="receipt-card">
+            <div class="danger-icon-wrap">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            </div>
+            <h2 class="receipt-title">Number Expired</h2>
+            <p class="receipt-subtitle">The 30-minute processing window for this temporary payment node has closed.</p>
+            <button class="close-btn" onclick="resetDemo()">Generate New Session</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div>PayStack.ng</div>
+        <div style="opacity: 0.5;">Secured with mock cross-network validation engines</div>
+    </footer>
+
+    <!-- Script Triggers -->
+    <script>
+        let countdownInterval;
+
+        // Initialize persistent timer logic on load
+        window.addEventListener('DOMContentLoaded', () => {
+            initTimer();
+        });
+
+        function initTimer() {
+            const totalDuration = 30 * 60 * 1000; // 30 minutes in milliseconds
+            let expirationTime = localStorage.getItem('airtime_payment_expiry');
+
+            if (!expirationTime) {
+                // If no session exists, establish one starting now
+                expirationTime = Date.now() + totalDuration;
+                localStorage.setItem('airtime_payment_expiry', expirationTime);
+            }
+
+            // Convert to base 10 int safely
+            expirationTime = parseInt(expirationTime, 10);
+
+            // Immediately run calculations and kick off the runtime interval loop
+            updateCountdown(expirationTime);
+            clearInterval(countdownInterval);
+            countdownInterval = setInterval(() => updateCountdown(expirationTime), 1000);
+        }
+
+        function updateCountdown(expiry) {
+            const timeLeft = expiry - Date.now();
+
+            if (timeLeft <= 0) {
+                clearInterval(countdownInterval);
+                document.getElementById('countdownDisplay').innerText = "00:00";
+                handleSessionExpiration();
+                return;
+            }
+
+            // Standard clock formatting configurations
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            const displayMinutes = minutes < 10 ? '0' + minutes : minutes;
+            const displaySeconds = seconds < 10 ? '0' + seconds : seconds;
+
+            document.getElementById('countdownDisplay').innerText = `${displayMinutes}:${displaySeconds}`;
+        }
+
+        function handleSessionExpiration() {
+            // Alter interface states to mirror expired tokens
+            document.getElementById('timerContainer').classList.add('expired');
+            document.getElementById('targetNumberBox').classList.add('expired-box');
+            document.getElementById('copyBtn').classList.add('disabled');
+            document.getElementById('confirmSentBtn').disabled = true;
+
+            // Prompt expiration modal sheet overlay
+            document.getElementById('expiredModal').classList.add('active');
+        }
+
+        function resetDemo() {
+            // Wipe system tracking variables and restart interface structures
+            localStorage.removeItem('airtime_payment_expiry');
+            document.getElementById('timerContainer').classList.remove('expired');
+            document.getElementById('targetNumberBox').classList.remove('expired-box');
+            document.getElementById('copyBtn').classList.remove('disabled');
+            document.getElementById('confirmSentBtn').disabled = false;
+            document.getElementById('expiredModal').classList.remove('active');
+            
+            initTimer();
+        }
+
+        function copyNumber() {
+            const num = document.getElementById('targetNum').innerText;
+            navigator.clipboard.writeText(num).then(() => {
+                const badge = document.querySelector('.copy-badge');
+                badge.innerText = 'Copied!';
+                badge.style.background = 'var(--success)';
+                badge.style.color = '#fff';
+                setTimeout(() => {
+                    badge.innerText = 'Copy';
+                    badge.style.background = 'var(--primary-light)';
+                    badge.style.color = 'var(--primary)';
+                }, 2000);
+            });
+        }
+
+        function verifyPayment() {
+            const btn = document.getElementById('confirmSentBtn');
+            const spinner = document.getElementById('sentSpinner');
+            const text = btn.querySelector('.btn-text');
+            const modal = document.getElementById('failedModal');
+
+            // Prevent multi-clicking and show professional inline loader
+            btn.style.pointerEvents = 'none';
+            text.style.opacity = '0.5';
+            text.innerText = 'Verifying transfer with network...';
+            spinner.style.display = 'block';
+
+            // Wait exactly 28 seconds (28000ms) before triggering failure modal feedback
+            setTimeout(() => {
+                // Restore button styles cleanly
+                btn.style.pointerEvents = 'auto';
+                text.style.opacity = '1';
+                text.innerText = 'I have sent the airtime';
+                spinner.style.display = 'none';
+
+                // Dynamically ensure failure messages explicitly demand verification check
+                document.getElementById('failReasonText').innerText = "The system was unable to detect the airtime. Transaction verification failed because no matching transfer was registered.";
+                
+                // Prompt professional failure sheet overlay
+                modal.classList.add('active');
+            }, 28000);
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+    </script>
+</body>
+</html>
