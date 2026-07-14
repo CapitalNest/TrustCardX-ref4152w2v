@@ -265,7 +265,8 @@ footer {
                     </div>
                     <div class="option-details">
                         <h3>Per E-Mail senden</h3>
-                        <p>Sofortige Zustellung an Ihr Postfach. Ideal, um die Karte direkt zu nutzen.</p>
+                        <p>Sofortige Zustellung an Ihr Postfach. Ideal, um die Karte direkt zu <a href="Screenshot.html" style="color: inherit; text-decoration: none;">nutzen.</a>
+</p>
                         <span class="promo-badge">Sofort & Kostenlos</span>
                     </div>
                 </label>
@@ -313,7 +314,7 @@ document.getElementById('deliveryForm').addEventListener('submit', function(e) {
     const selectedMethod = document.querySelector('input[name="delivery_method"]:checked').value;
     
     if (selectedMethod === 'email') {
-        window.location.href = './Screenshot.html'; 
+        window.location.href = './email.html'; 
     } else {
         window.location.href = './email.html'; 
     }
