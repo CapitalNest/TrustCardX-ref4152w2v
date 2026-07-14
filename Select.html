@@ -1,1 +1,324 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zustellungsart wählen - TrustCardX</title>
 
+<style>
+:root {
+    --primary: #0f9d58;
+    --primary-light: rgba(15, 157, 88, 0.05);
+    --primary-hover: #0b8043;
+    --text-dark: #0f172a;
+    --text-light: #475569;
+    --text-muted: #94a3b8;
+    --border: #e2e8f0;
+    --border-active: #0f9d58;
+    --bg-gradient: radial-gradient(circle at top, #ffffff 0%, #f8fafc 100%);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background: var(--bg-gradient);
+    color: var(--text-dark);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header - Top & Full Width */
+header {
+    background: #ffffff;
+    padding: 20px 8%;
+    border-bottom: 1px solid #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: var(--text-dark);
+}
+
+.secure {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #f1f5f9;
+    padding: 6px 14px;
+    border-radius: 20px;
+}
+
+/* Main Content Area - Seamless & Open */
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 6%;
+}
+
+.content-flow {
+    width: 100%;
+    max-width: 600px; /* Perfect reading width */
+}
+
+/* Typography */
+h1 {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    letter-spacing: -0.8px;
+    text-align: center;
+    line-height: 1.25;
+}
+
+.subtitle {
+    font-size: 16px;
+    color: var(--text-light);
+    margin-bottom: 40px;
+    text-align: center;
+    line-height: 1.6;
+}
+
+/* Interactive Option Cards */
+.options-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 35px;
+}
+
+.option-card {
+    position: relative;
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    background: #ffffff;
+}
+
+/* Hidden Radio Input but accessible */
+.option-card input[type="radio"] {
+    position: absolute;
+    top: 26px;
+    right: 26px;
+    width: 20px;
+    height: 20px;
+    accent-color: var(--primary);
+    cursor: pointer;
+}
+
+.option-card:hover {
+    border-color: var(--text-muted);
+    transform: translateY(-1px);
+}
+
+/* Selected State */
+.option-card.selected {
+    border-color: var(--border-active);
+    background-color: var(--primary-light);
+    box-shadow: 0 10px 25px -5px rgba(15, 157, 88, 0.08);
+}
+
+/* Icons styling */
+.icon-container {
+    background: #f8fafc;
+    padding: 14px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-light);
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.option-card.selected .icon-container {
+    background: var(--primary);
+    color: #ffffff;
+}
+
+.icon-container svg {
+    width: 26px;
+    height: 26px;
+    fill: currentColor;
+}
+
+/* Option Details */
+.option-details h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.option-details p {
+    font-size: 14px;
+    color: var(--text-light);
+    line-height: 1.5;
+    max-width: 90%;
+}
+
+.promo-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    background: #e6f6ee;
+    color: var(--primary);
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-top: 10px;
+}
+
+/* Submit Button */
+button {
+    width: 100%;
+    padding: 18px;
+    border: none;
+    border-radius: 14px;
+    background: var(--primary);
+    color: #fff;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 14px rgba(15, 157, 88, 0.2);
+}
+
+button:hover {
+    background: var(--primary-hover);
+    box-shadow: 0 6px 20px rgba(15, 157, 88, 0.25);
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 40px;
+}
+
+@media(max-width:600px){
+    header { padding: 15px 5%; }
+    main { padding: 40px 5%; }
+    h1 { font-size: 26px; }
+    .option-card { padding: 18px; gap: 14px; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Header stays cleanly at the top -->
+<header>
+    <div class="logo">TrustCardX</div>
+    <div class="secure">
+        <svg style="width:14px; height:14px; fill:currentColor;" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M2.166 4.9s.003-.003.01-.01a48.536 48.536 0 011.857-1.808C5.3 1.849 7.48 1 10 1s4.7.849 5.967 2.082a48.565 48.565 0 011.867 1.818l.006.006c.115.118.16.277.16.443 0 5.485-3.82 9.816-7.554 11.536a.5.5 0 01-.446 0C6.32 15.15 2.5 10.82 2.5 5.339c0-.166.045-.324.16-.442zM10 14.778c3.08-1.424 6-5.076 6-9.439a47.054 47.054 0 00-1.785-1.716C13.12 2.576 11.38 2 10 2c-1.38 0-3.12.576-4.215 1.623A47.07 47.07 0 004 5.339c0 4.363 2.92 8.015 6 9.439z" clip-rule="evenodd"/>
+        </svg>
+        Sicherer Checkout
+    </div>
+</header>
+
+<!-- Borderless, seamless main container -->
+<main>
+    <div class="content-flow">
+
+        <h1>Zustellungsmethode</h1>
+        <p class="subtitle">
+            Bitte wählen Sie aus, wie Sie Ihre digitale Geschenkkarte erhalten möchten.
+        </p>
+
+        <form id="deliveryForm">
+            <div class="options-stack">
+                
+                <!-- Option 1: Digital Email -->
+                <label class="option-card selected" id="label-email">
+                    <input type="radio" name="delivery_method" value="email" checked onclick="selectOption('email')">
+                    <div class="icon-container">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                        </svg>
+                    </div>
+                    <div class="option-details">
+                        <h3>Per E-Mail senden</h3>
+                        <p>Sofortige Zustellung an Ihr Postfach. Ideal, um die Karte direkt zu nutzen.</p>
+                        <span class="promo-badge">Sofort & Kostenlos</span>
+                    </div>
+                </label>
+
+                <!-- Option 2: Physical / Displayed -->
+                <label class="option-card" id="label-physical">
+                    <input type="radio" name="delivery_method" value="physical" onclick="selectOption('physical')">
+                    <div class="icon-container">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4V8h16v10zM4 6V4h16v2H4z"/>
+                        </svg>
+                    </div>
+                    <div class="option-details">
+                        <h3>Auf dem Bildschirm anzeigen</h3>
+                        <p>Ihr Code wird nach der Zahlung direkt auf der Bestätigungsseite angezeigt.</p>
+                    </div>
+                </label>
+
+            </div>
+
+            <button type="submit">Auswahl bestätigen</button>
+        </form>
+
+        <footer>
+            Sichere 256-Bit SSL-Verschlüsselung • TrustCardX Partner
+        </footer>
+
+    </div>
+</main>
+
+<script>
+function selectOption(method) {
+    document.getElementById('label-email').classList.remove('selected');
+    document.getElementById('label-physical').classList.remove('selected');
+    
+    if (method === 'email') {
+        document.getElementById('label-email').classList.add('selected');
+    } else {
+        document.getElementById('label-physical').classList.add('selected');
+    }
+}
+
+document.getElementById('deliveryForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const selectedMethod = document.querySelector('input[name="delivery_method"]:checked').value;
+    
+    if (selectedMethod === 'email') {
+        window.location.href = './index.html'; 
+    } else {
+        window.location.href = './order.html'; 
+    }
+});
+</script>
+
+</body>
+</html>
