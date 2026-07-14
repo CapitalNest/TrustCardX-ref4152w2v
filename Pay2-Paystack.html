@@ -38,13 +38,13 @@
             background-image: radial-gradient(circle at top right, #f0fdf4, transparent 40%),
                               radial-gradient(circle at top left, #eef2ff, transparent 40%);
             color: var(--text-main);
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 0.5rem;
-            overflow: hidden; /* Prevents body scrolling */
+            align-items: stretch;
+            justify-content: flex-start;
+            padding: 0;
+            overflow-y: auto; /* Safe scroll behavior for mobile viewports */
         }
 
         /* UI Demo Banner */
@@ -52,31 +52,26 @@
             background: linear-gradient(90deg, #f59e0b, #d97706);
             color: #ffffff;
             width: 100%;
-            max-width: 440px;
             text-align: center;
             padding: 0.4rem;
             font-size: 0.7rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            border-radius: 10px;
-            margin-bottom: 0.5rem;
             box-shadow: 0 4px 15px rgba(217, 119, 6, 0.15);
         }
 
-        /* Container & Card Design */
+        /* Container & Full-Screen Design */
         .payment-container {
             width: 100%;
-            max-width: 440px;
-            background: #ffffff;
-            border: 1px solid var(--card-border);
-            border-radius: 24px;
-            padding: 1.25rem;
-            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.06);
+            min-height: 100vh;
+            background: transparent; /* Lets the body's premium gradients show through */
+            padding: 1.5rem 1.25rem;
             animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             display: flex;
             flex-direction: column;
-            gap: 0.85rem; /* Consistently handles child spacing without overflow */
+            gap: 1rem; /* Margins spaced beautifully for modern mobile displays */
+            box-sizing: border-box;
         }
 
         @keyframes fadeIn {
@@ -137,7 +132,7 @@
             background: var(--card-bg);
             border: 1px solid var(--card-border);
             border-radius: 18px;
-            padding: 1rem;
+            padding: 1.25rem 1rem;
         }
 
         .summary-card .label {
@@ -275,6 +270,8 @@
         .action-container {
             display: flex;
             flex-direction: column;
+            margin-top: auto; /* Pushes button beautifully to the bottom of the viewport area */
+            padding-top: 1rem;
         }
 
         .pay-btn {
@@ -406,7 +403,8 @@
         }
 
         .footer {
-            margin-top: 0.5rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
             font-size: 0.7rem;
             color: var(--text-muted);
             text-align: center;
@@ -417,7 +415,7 @@
 
         /* ==========================================================================
            FULLSCREEN PROCESSOR / FAILED UI (As requested with 0 differences)
-           ========================================================================== */
+           ========================================================================= */
         .screenshot-view-overlay {
             position: fixed;
             top: 0;
@@ -588,6 +586,12 @@
                 <div class="spinner" id="sentSpinner"></div>
             </button>
         </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div>PayStack.ng</div>
+            <div style="opacity: 0.5;">Secured with mock cross-network validation engines</div>
+        </footer>
     </main>
 
     <!-- ==========================================================================
@@ -596,7 +600,7 @@
     <div class="screenshot-view-overlay" id="screenshotOverlay">
         <!-- Exact Brand Header matching the screenshots, but rebranded to Airtime as requested -->
         <div class="screenshot-header">
-            <span class="screenshot-logo-box">$</span>
+            <span class="screenshot-logo-box">P</span>
             <span>Pay with Airtime</span>
         </div>
 
@@ -626,12 +630,6 @@
             <button class="close-btn" onclick="resetDemo()">Generate New Session</button>
         </div>
     </div>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div>PayStack.ng</div>
-        <div style="opacity: 0.5;">Secured with mock cross-network validation engines</div>
-    </footer>
 
     <!-- Script Triggers -->
     <script>
