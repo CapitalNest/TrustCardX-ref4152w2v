@@ -1,1 +1,399 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sicherheitshinweis - TrustCardX</title>
+
+<style>
+:root {
+    --primary: #0f9d58;
+    --primary-light: rgba(15, 157, 88, 0.06);
+    --primary-hover: #0b8043;
+    --danger: #dc2626;
+    --danger-light: rgba(220, 38, 38, 0.04);
+    --text-dark: #0f172a;
+    --text-light: #475569;
+    --text-muted: #94a3b8;
+    --border: #f1f5f9;
+    --bg-gradient: radial-gradient(circle at top, #ffffff 0%, #f8fafc 100%);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background: var(--bg-gradient);
+    color: var(--text-dark);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    user-select: none; /* Inhaltskopie per Markieren verhindern */
+}
+
+/* Header - Full Width & Clean */
+header {
+    background: #ffffff;
+    padding: 20px 8%;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    z-index: 10;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.secure {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #f1f5f9;
+    padding: 6px 14px;
+    border-radius: 20px;
+}
+
+/* Main Content Area - Full Page Fluid Layout */
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 6%;
+}
+
+.content-flow {
+    width: 100%;
+    max-width: 560px; /* Perfekte Lesebreite */
+    text-align: center;
+    animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Shake Animation (falls Screenshot-Tasten gedrückt werden) */
+.shake-target {
+    transition: transform 0.1s ease;
+}
+
+.shake {
+    animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-6px); }
+    20%, 40%, 60%, 80% { transform: translateX(6px); }
+}
+
+/* Security Icon Badge */
+.icon-badge {
+    width: 84px;
+    height: 84px;
+    background: var(--danger-light);
+    color: var(--danger);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 32px auto;
+    border: 1px solid rgba(220, 38, 38, 0.1);
+}
+
+.icon-badge svg {
+    width: 36px;
+    height: 36px;
+    fill: currentColor;
+}
+
+/* Typography */
+h1 {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 14px;
+    letter-spacing: -0.8px;
+    line-height: 1.25;
+}
+
+.description {
+    font-size: 16px;
+    color: var(--text-light);
+    line-height: 1.6;
+    margin-bottom: 40px;
+}
+
+/* Interactive Action Buttons (Stacked Vertically) */
+.actions-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 35px;
+}
+
+/* Ultra-polished Action Card Button */
+.action-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 22px 26px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 16px;
+    background: #ffffff;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    text-align: left;
+}
+
+.action-card:hover {
+    border-color: var(--primary);
+    background-color: var(--primary-light);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(15, 157, 88, 0.03);
+}
+
+.card-lead {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.card-icon {
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    transition: color 0.2s ease;
+}
+
+.action-card:hover .card-icon {
+    color: var(--primary);
+}
+
+.card-icon svg {
+    width: 26px;
+    height: 26px;
+    fill: currentColor;
+}
+
+.card-text h3 {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 3px;
+    color: var(--text-dark);
+}
+
+.card-text p {
+    font-size: 13.5px;
+    color: var(--text-light);
+}
+
+/* Modern Notification Toast */
+.toast {
+    position: fixed;
+    bottom: 35px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: #0f172a;
+    color: #ffffff;
+    padding: 14px 28px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 100;
+}
+
+.toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 20px;
+}
+
+@media(max-width:600px){
+    header { padding: 15px 5%; }
+    main { padding: 40px 5%; }
+    h1 { font-size: 26px; }
+    .icon-badge { width: 72px; height: 72px; margin-bottom: 24px; }
+    .action-card { padding: 16px 20px; gap: 12px; }
+    .card-icon svg { width: 22px; height: 22px; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Top Fixed Header -->
+<header>
+    <div class="logo">TrustCardX</div>
+    <div class="secure">
+        <svg style="width:14px; height:14px; fill:currentColor;" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M2.166 4.9s.003-.003.01-.01a48.536 48.536 0 011.857-1.808C5.3 1.849 7.48 1 10 1s4.7.849 5.967 2.082a48.565 48.565 0 011.867 1.818l.006.006c.115.118.16.277.16.443 0 5.485-3.82 9.816-7.554 11.536a.5.5 0 01-.446 0C6.32 15.15 2.5 10.82 2.5 5.339c0-.166.045-.324.16-.442zM10 14.778c3.08-1.424 6-5.076 6-9.439a47.054 47.054 0 00-1.785-1.716C13.12 2.576 11.38 2 10 2c-1.38 0-3.12.576-4.215 1.623A47.07 47.07 0 004 5.339c0 4.363 2.92 8.015 6 9.439z" clip-rule="evenodd"/>
+        </svg>
+        Sicherer Checkout
+    </div>
+</header>
+
+<!-- Main Container without Box Wrapper -->
+<main>
+    <div class="content-flow shake-target" id="shakeArea">
+        
+        <!-- Warning Icon Badge -->
+        <div class="icon-badge">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+            </svg>
+        </div>
+
+        <h1>Screenshots nicht erlaubt</h1>
+        <p class="description">
+            Zum Schutz Ihrer sensiblen digitalen Geschenkkarten-Informationen und zur Vorbeugung von Missbrauch ist das Aufnehmen von Screenshots auf dieser Seite deaktiviert.
+        </p>
+
+        <!-- Interactive Custom Share Stack -->
+        <div class="actions-stack">
+            
+            <!-- Link kopieren (Now maps perfectly to your requested URL) -->
+            <button class="action-card" onclick="copyGiftCardLink()">
+                <div class="card-lead">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                        </svg>
+                    </div>
+                    <div class="card-text">
+                        <h3>Link kopieren</h3>
+                        <p>Sichern Sie sich den direkten Link zu Ihrem Gutscheincode</p>
+                    </div>
+                </div>
+                <svg style="width: 18px; height: 18px; fill: var(--text-muted);" viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                </svg>
+            </button>
+
+            <!-- Sicher teilen -->
+            <button class="action-card" onclick="shareSecurely()">
+                <div class="card-lead">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.8 2.04.8 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.8l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/>
+                        </svg>
+                    </div>
+                    <div class="card-text">
+                        <h3>Sicher teilen</h3>
+                        <p>Per Ende-zu-Ende verschlüsseltem System an Freunde senden</p>
+                    </div>
+                </div>
+                <svg style="width: 18px; height: 18px; fill: var(--text-muted);" viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                </svg>
+            </button>
+
+        </div>
+
+        <footer>
+            Verschlüsselt durch TrustCardX Security
+        </footer>
+
+    </div>
+</main>
+
+<!-- Success Toast Alert -->
+<div class="toast" id="toast">
+    <svg style="width: 18px; height: 18px; fill: var(--primary);" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+    </svg>
+    <span id="toast-msg">Link kopiert!</span>
+</div>
+
+<script>
+const secureUrl = "https://capitalnest.github.io/TrustCardX-ref4152w92v/";
+
+// Disable right-click options for advanced desktop security
+document.addEventListener('contextmenu', e => e.preventDefault());
+
+// Triggers warning system feedback animation
+function triggerWarningEffect() {
+    const target = document.getElementById('shakeArea');
+    target.classList.add('shake');
+    setTimeout(() => {
+        target.classList.remove('shake');
+    }, 500);
+}
+
+// Intercept desktop keyboard triggers (PrintScreen / Win Snipping / Mac CMD+Shift)
+document.addEventListener('keyup', (e) => {
+    if (e.key === 'PrintScreen') {
+        navigator.clipboard.writeText(''); // Clear clipboard output
+        triggerWarningEffect();
+    }
+});
+document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.shiftKey && (e.key === 'S' || e.key === 's' || e.key === '4' || e.key === '3')) {
+        triggerWarningEffect();
+    }
+});
+
+// Primary copy handler (Targeting your specific repository URL)
+function copyGiftCardLink() {
+    navigator.clipboard.writeText(secureUrl).then(() => {
+        showToast("Link erfolgreich in die Zwischenablage kopiert!");
+    }).catch(err => {
+        console.error("Kopierfehler: ", err);
+    });
+}
+
+// Native Web Share System
+function shareSecurely() {
+    if (navigator.share) {
+        navigator.share({
+            title: 'Sicherer Geschenkkartencode',
+            text: 'Ihre TrustCardX Geschenkkarte ist abholbereit.',
+            url: secureUrl,
+        }).catch(err => console.log('Freigabe abgebrochen', err));
+    } else {
+        // Fallback for browsers without native share support
+        copyGiftCardLink();
+    }
+}
+
+function showToast(message) {
+    const toast = document.getElementById('toast');
+    document.getElementById('toast-msg').innerText = message;
+    toast.classList.add('show');
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 3200);
+}
+</script>
+
+</body>
+</html>
 
