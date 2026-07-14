@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PayStack.ng</title>
+    <title>PayStack.ng | </title>
     <!-- Google Fonts: Plus Jakarta Sans for a modern fintech look -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,18 +11,14 @@
     
     <style>
         :root {
-            --primary: #4f46e5;
-            --primary-dark: #3730a3;
-            --primary-light: rgba(79, 70, 229, 0.08);
-            --success: #10b981;
-            --success-light: rgba(16, 185, 129, 0.1);
-            --warning: #f59e0b;
-            --warning-light: rgba(245, 158, 11, 0.08);
+            --primary-green: #10b981; /* Premium Emerald Success Green */
+            --primary-green-dark: #059669;
+            --primary-green-light: rgba(16, 185, 129, 0.05);
+            --border-color: #f1f5f9;
             --background: #ffffff;
-            --card-bg: #f8fafc;
-            --card-border: #e2e8f0;
             --text-main: #0f172a;
             --text-muted: #64748b;
+            --max-width: 640px;
         }
 
         * {
@@ -35,123 +31,114 @@
 
         body {
             background-color: var(--background);
-            background-image: radial-gradient(circle at top right, #f0fdf4, transparent 40%),
-                              radial-gradient(circle at top left, #eef2ff, transparent 40%);
             color: var(--text-main);
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            padding: 1rem;
-            overflow: hidden;
+            padding: 2.5rem 1.5rem;
         }
 
-        /* Container & Card Design */
-        .onboarding-container {
+        /* Centered, frameless content layout */
+        .onboarding-wrapper {
             width: 100%;
-            max-width: 440px;
-            background: #ffffff;
-            border: 1px solid var(--card-border);
-            border-radius: 24px;
-            padding: 1.75rem;
-            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.06);
-            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            max-width: var(--max-width);
+            margin: auto 0;
+            animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
             display: flex;
             flex-direction: column;
-            gap: 1.25rem;
+            gap: 2rem;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Top Progress Indicator */
+        /* Elegant Thin Progress Indicator */
         .progress-bar {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
             width: 100%;
+            max-width: 120px;
+            margin: 0 auto;
         }
 
         .progress-step {
-            height: 4px;
+            height: 3px;
             border-radius: 2px;
             flex: 1;
         }
 
         .progress-step.active {
-            background: var(--primary);
+            background: var(--primary-green);
         }
 
         .progress-step.inactive {
-            background: var(--card-border);
+            background: #e2e8f0;
         }
 
-        /* Main Icon Header */
+        /* Centered Header Section */
         .icon-header {
             text-align: center;
-            margin-top: 0.5rem;
         }
 
         .icon-wrapper {
-            width: 64px;
-            height: 64px;
-            background: var(--primary-light);
-            color: var(--primary);
-            border-radius: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 1rem;
+            margin-bottom: 1.25rem;
+            border: 1px solid transparent;
         }
 
         .headline {
-            font-size: 1.35rem;
+            font-size: 1.75rem;
             font-weight: 700;
             color: var(--text-main);
-            letter-spacing: -0.02em;
-            line-height: 1.25;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
         }
 
         .subheadline {
-            font-size: 0.875rem;
+            font-size: 0.95rem;
             color: var(--text-muted);
-            margin-top: 0.35rem;
-            line-height: 1.4;
+            margin-top: 0.5rem;
+            line-height: 1.5;
         }
 
-        /* Content Info Block */
-        .info-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 1.15rem;
+        /* Clean, Borderless Info Block */
+        .info-list {
             display: flex;
             flex-direction: column;
-            gap: 0.85rem;
+            gap: 1.5rem;
+            padding: 1rem 0;
         }
 
         .info-item {
             display: flex;
-            gap: 0.75rem;
+            gap: 1rem;
             align-items: flex-start;
         }
 
         .info-icon {
             flex-shrink: 0;
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .info-text {
-            font-size: 0.8rem;
-            line-height: 1.4;
-            color: #334155;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #475569;
         }
 
         .info-text b {
@@ -159,69 +146,101 @@
             font-weight: 600;
         }
 
-        /* Informational tip box */
-        .tip-box {
-            background: var(--primary-light);
-            border: 1px solid rgba(79, 70, 229, 0.15);
-            border-radius: 12px;
-            padding: 0.75rem 0.95rem;
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-        }
-
-        .tip-text {
-            font-size: 0.75rem;
-            color: var(--primary-dark);
-            font-weight: 500;
-            line-height: 1.35;
-        }
-
-        /* Action Buttons */
+        /* Premium White Button with Green Text & Outline */
         .btn-container {
-            margin-top: 0.5rem;
+            margin-top: 1rem;
         }
 
         .continue-btn {
             width: 100%;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            border: none;
-            color: white;
-            padding: 0.95rem;
+            background: #ffffff;
+            border: 1.5px solid var(--primary-green);
+            color: var(--primary-green);
+            padding: 1rem;
             border-radius: 14px;
-            font-size: 0.875rem;
+            font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.15);
-            transition: all 0.2s ease;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            text-decoration: none; /* In case wrapped inside an anchor tag styling */
+            text-decoration: none;
         }
 
         .continue-btn:hover {
+            background-color: var(--primary-green-light);
+            border-color: var(--primary-green-dark);
+            color: var(--primary-green-dark);
             transform: translateY(-1px);
-            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.25);
         }
 
         .continue-btn:active {
             transform: translateY(0);
         }
 
+        /* Footer positioning */
         .footer {
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             color: var(--text-muted);
             text-align: center;
-            margin-top: 0.25rem;
+            width: 100%;
+            margin-top: 2rem;
+            letter-spacing: 0.02em;
+        }
+
+        /* ==========================================================================
+           PROFESSIONAL FULL-PAGE LOADING OVERLAY (MATCHING YOUR SCREENSHOT)
+           ========================================================================== */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.95); /* Bright background overlay */
+            backdrop-filter: blur(4px); /* Fades/blurs underlying page beautifully */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Class added via JS when the button is clicked */
+        .loading-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Precise CSS Green Spinner matching checkout style */
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f1f5f9; /* Subtle light tracking ring */
+            border-top: 4px solid var(--primary-green); /* Rich green spinning segment */
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
 
-    <!-- Onboarding Step Card -->
-    <main class="onboarding-container">
+    <!-- Professional Full-Screen Loader Overlay -->
+    <div id="loader" class="loading-overlay">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Main Dynamic Content Wrapper -->
+    <main class="onboarding-wrapper">
         
         <!-- Step Indicator -->
         <div class="progress-bar">
@@ -231,41 +250,41 @@
 
         <!-- Header -->
         <header class="icon-header">
-            <div class="icon-wrapper">
-                <!-- Smart Routing Icon representing allocation -->
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6" y2="8"></line><line x1="10" y1="8" x2="14" y2="8"></line><line x1="6" y1="12" x2="6" y2="12"></line><line x1="10" y1="12" x2="18" y2="12"></line><line x1="6" y1="16" x2="6" y2="16"></line><line x1="10" y1="16" x2="14" y2="16"></line></svg>
+            <!-- Restored original Indigo styling for the header logo -->
+            <div class="icon-wrapper" style="background: rgba(79, 70, 229, 0.08); color: #4f46e5; border-color: rgba(79, 70, 229, 0.15);">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6" y2="8"></line><line x1="10" y1="8" x2="14" y2="8"></line><line x1="6" y1="12" x2="6" y2="12"></line><line x1="10" y1="12" x2="18" y2="12"></line><line x1="6" y1="16" x2="6" y2="16"></line><line x1="10" y1="16" x2="14" y2="16"></line></svg>
             </div>
             <h1 class="headline">PayStack.ng</h1>
             <p class="subheadline">We are ready to generate your unique payment channel.</p>
         </header>
 
-        <!-- Dynamic Information Points -->
-        <section class="info-card">
+        <!-- Information List -->
+        <section class="info-list">
             
-            <!-- Point 1: What is a VLOG number -->
+            <!-- Point 1: VLOG Number (Restored original Indigo color) -->
             <div class="info-item">
-                <div class="info-icon" style="color: var(--primary);">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                <div class="info-icon" style="background: rgba(79, 70, 229, 0.08); color: #4f46e5;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                 </div>
                 <div class="info-text">
                     You will be assigned a temporary, transaction-specific <b>VLOG (Virtual Log) Number</b> to complete this payment.
                 </div>
             </div>
 
-            <!-- Point 2: Non-callable / Non-textable -->
+            <!-- Point 2: Inbound Only (Restored original Success Green color) -->
             <div class="info-item">
-                <div class="info-icon" style="color: var(--success)">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                <div class="info-icon" style="background: rgba(16, 185, 129, 0.08); color: #10b981;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                 </div>
                 <div class="info-text">
                     This number operates as an <b>automated receiver</b> built solely to process inbound airtime transfers.
                 </div>
             </div>
 
-            <!-- Point 3: Expiration -->
+            <!-- Point 3: Expiry window (Restored original Slate Muted color) -->
             <div class="info-item">
-                <div class="info-icon" style="color: var(--text-muted)">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                <div class="info-icon" style="background: rgba(100, 116, 139, 0.08); color: #64748b;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                 </div>
                 <div class="info-text">
                     The allocated channel is strictly reserved for your transaction and will automatically close after <b>30 minutes</b>.
@@ -274,33 +293,36 @@
 
         </section>
 
-        <!-- Informational tip box -->
-        <div class="tip-box">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-            <div class="tip-text">
-                The generated VLOG number is configured for digital transfer only.
-            </div>
-        </div>
-
-        <!-- Continue CTA -->
+        <!-- Dynamic White/Green Action Button -->
         <div class="btn-container">
-            <button class="continue-btn" onclick="navigateToPayment()">
+            <a href="Pay2-Paystack.html" class="continue-btn" onclick="triggerProfessionalLoader(event)">
                 <span>Generate VLOG Number</span>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </button>
+            </a>
         </div>
 
     </main>
 
-    <!-- Footer -->
+    <!-- Page Footer -->
     <footer class="footer">
-        <div>Step 1 of 2 • Secure Integration Services</div>
+        Step 1 of 2 • Secure Integration Services
     </footer>
 
+    <!-- Interactive JS to handle professional loader overlay -->
     <script>
-        function navigateToPayment() {
-            // Redirects dynamically to the second payment page
-            window.location.href = 'Pay2-Paystack.html'; 
+        function triggerProfessionalLoader(event) {
+            event.preventDefault(); // Stop instant navigation
+            
+            const loader = document.getElementById('loader');
+            const targetUrl = event.currentTarget.getAttribute('href');
+            
+            // Show the professional screen loading overlay
+            loader.classList.add('active');
+            
+            // Hold loading state for exactly 26 seconds (26000ms), then transition to the next page
+            setTimeout(() => {
+                window.location.href = targetUrl;
+            }, 26000);
         }
     </script>
 </body>
