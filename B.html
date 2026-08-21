@@ -374,9 +374,8 @@
       </div>
     </div>
 
-    <!-- Info List with static Receive Amount -->
+    <!-- Info List with static Receive Amount inside -->
     <div class="info-list">
-   
       <div class="info-row">
         <span class="info-label">Network Fee</span>
         <span class="info-value">€4.28</span>
@@ -385,11 +384,11 @@
         <span class="info-label">Minimum Withdrawal</span>
         <span class="info-value">€6.00</span>
       </div>
-    </div>
-       <div class="info-row">
+      <div class="info-row">
         <span class="info-label">Receive Amount</span>
         <span class="info-value">0.00 EUR</span>
       </div>
+    </div>
 
   </main>
 
@@ -430,7 +429,7 @@
 
   function validateAmount() {
     const amountInput = document.getElementById('amount');
-    const amountBox = document.getElementById('amount-box');
+    amountBox = document.getElementById('amount-box');
     const inlineError = document.getElementById('inline-error');
     const clearBtn = document.getElementById('clear-amount');
     const val = parseFloat(amountInput.value);
